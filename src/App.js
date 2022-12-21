@@ -22,6 +22,8 @@ import FormEditChannel from "./components/FormEditChannel"
 
 import VideoDetail from "./components/VideoDetail"
 
+import Subscription from "./components/Subscription"
+
 function App() {
 
   let navigate = useNavigate();
@@ -91,6 +93,7 @@ function App() {
                 <Route exact path='/MyChannelPage/:id' element={<MyChannel />} />
                 <Route exact path='/EditChannel/:id' element={<FormEditChannel />} />
                 <Route exact path='/DetailVideoPage/:id' element={<VideoDetail />} />
+                <Route exact path='/Subscription' element={<Subscription />} />
               </Routes>
               </div>
             </Col>

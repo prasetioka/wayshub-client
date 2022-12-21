@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Container, Form, Stack, Image, Card, Button } from "react-bootstrap"
+import { Container, Form, Stack, Image, Card, Button, Alert } from "react-bootstrap"
 import { UserContext } from "../context/userContext"
 import { useMutation } from "react-query"
 import { API } from "../config/api"
@@ -8,10 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 import AttachIcon from "../img/AttachIcon.png"
 import UploadVideoIcon from "../img/UploadVideoIcon.png"
+import PopUpload from "../components/ModalUpload"
 
 function FormAddVideo() {
 
     const navigate = useNavigate()
+
+    const [showPop, setShowPop] = useState(false)
 
     const [form, setForm] = useState({
         title: "",
@@ -49,6 +52,7 @@ function FormAddVideo() {
 
             console.log(form);
 
+            setShowPop(true)
             const response = await API.post('/video', formData, config);
             console.log("ini response add video", response);
 
@@ -116,6 +120,13 @@ function FormAddVideo() {
                 <Button variant="primary" type="submit" style={{ backgroundColor: '#FF7A00', border: 'none' }} className="py-2 fw-bold fs-5 w-100 text-white">
                     Add
                 </Button>
+
+                <PopUpload
+                    show={showPop}
+                    hide={() => {
+                        setShowPop(false)
+                    }}
+                />
             </Form>
         </Container>
     )

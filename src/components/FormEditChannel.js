@@ -5,12 +5,15 @@ import { useMutation } from "react-query";
 import { API } from "../config/api";
 
 import UploadVideoIcon from "../img/UploadImgIcon.png"
+import PopUpload from "../components/ModalUpload"
 
 function FormEditChannel() {
 
     const { id } = useParams();
 
     const navigate = useNavigate()
+
+    const [showPop, setShowPop] = useState(false)
 
     const [form, setForm] = useState({
         channelName: "",
@@ -44,8 +47,9 @@ function FormEditChannel() {
             formData.set('description', form.description);
             formData.set('photo', form.photo[0], form.photo[0].name);
 
+            setShowPop(true)
             const response = await API.patch('/channel/' + id, formData, config);
-            console.log("ini response add video", response);
+            console.log("ini response edit channel", response);
 
             navigate('/MyChannelPage/' + id);
         } catch (error) {
@@ -117,6 +121,12 @@ function FormEditChannel() {
                             <Button variant="primary" type="submit" style={{ backgroundColor: '#FF7A00', border: 'none' }} className="py-2 fw-bold fs-5 w-100 text-white">
                                 Save
                             </Button>
+                            <PopUpload
+                                show={showPop}
+                                hide={() => {
+                                    setShowPop(false)
+                                }}
+                            />
                         </Form>
                     </Col>
                 </Row>

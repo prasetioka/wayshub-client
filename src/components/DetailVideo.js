@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Container, Stack, Image, Card, Form, Button } from "react-bootstrap"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "react-query";
 import { API } from "../config/api";
 import { UserContext } from "../context/userContext";
@@ -18,7 +18,7 @@ function DetailVideo() {
 
     const [state] = useContext(UserContext)
 
-    const LinkPhoto = "http://localhost:5000/uploads/"
+    const navigate = useNavigate()
 
     let { data: video, refetch } = useQuery('videoCache', async () => {
         const response = await API.get('/video/' + id);
@@ -54,10 +54,8 @@ function DetailVideo() {
             const formData = new FormData();
             formData.set('comment', form.comment);
 
-            // console.log(form);
-
             const response = await API.post('/comment/' + id, formData, config);
-            console.log("ini response add video", response);
+            console.log("ini response add comment", response);
             refetch()
 
         } catch (error) {
@@ -65,18 +63,18 @@ function DetailVideo() {
         }
     });
 
-    // const ViewsCount = async () => {
-    //     try {
-    //         const response = await API.post('/views/' + id);
-    //         console.log("ini response viewCount", response)
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const UpdateViews = async () => {
+        try {
+            const response = await API.patch('/UpdateViews/' + id);
+            console.log("ini response views", response)
+        } catch (error) {
+            console.log("ini error views", error);
+        }
+    };
 
-    // useEffect(() => {
-    //     ViewsCount()
-    // }, [])
+    useEffect(() => {
+        UpdateViews()
+    }, [])
 
     return (
         <>
@@ -84,6 +82,7 @@ function DetailVideo() {
                 <Stack direction="vertical">
                     <video src={video?.video} type="video/mp4" controls autoPlay />
                     <Card.Text className="fs-5 fw-bold text-white mt-3 mb-3">{video?.title}</Card.Text>
+                    <Card.Text className="fs-6 mb-2 btn p-0 text-start" onClick={() => navigate('/CreatorPage/' + video?.channel.id)} style={{ color: '#555555' }}>{video?.channel.channelName}</Card.Text>
                     <Stack direction="horizontal" gap={4}>
                         <Stack direction="horizontal">
                             <div className="d-flex flex-column justify-content-center me-2">
@@ -96,7 +95,7 @@ function DetailVideo() {
                             <div className="d-flex flex-column justify-content-center me-2">
                                 <Image src={DateIcon} />
                             </div>
-                            <Card.Text className="fs-6" style={{ color: '#555555' }}>06 Sep 2020</Card.Text>
+                            <Card.Text className="fs-6" style={{ color: '#555555' }}>{video?.formatTime}</Card.Text>
                         </Stack>
                     </Stack>
                     <hr style={{ borderTop: '3px solid #C2C2C2' }} />
@@ -104,7 +103,7 @@ function DetailVideo() {
                     <Form onSubmit={(e) => handleSubmit.mutate(e)}>
                         <Stack direction="horizontal">
                             <div className="d-flex flex-column justify-content-center me-3">
-                                <Image src={channel?.photo === "http://localhost:5000/uploads/" ? Foto : channel?.photo} style={{ width: '60px' }} />
+                                <Image src={channel?.photo === "" ? Foto : channel?.photo} style={{ width: '60px' }} />
                             </div>
                             <Form.Control
                                 className="py-1 fs-5"
@@ -125,7 +124,7 @@ function DetailVideo() {
                             {video?.comments.map((item) => (
                                 <Stack direction="horizontal" className="mb-4">
                                     <div className="d-flex flex-column justify-content-center me-3">
-                                        <Image src={LinkPhoto + item.channel.photo} style={{ width: '60px' }} />
+                                        <Image src={item.channel.photo === "" ? Foto : item.channel.photo} style={{ width: '60px' }} />
                                     </div>
                                     <Card className="w-100 border-0 p-2" style={{ backgroundColor: '#555555' }}>
                                         <Card.Text className="fs-5 fw-light text-light">{item.comment}</Card.Text>

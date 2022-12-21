@@ -25,14 +25,14 @@ function SideVideoList() {
                             <Stack direction="vertical" >
                                 <Image src={item.thumbnail} className="mb-2" />
                                 <Card.Text className="text-white mb-3" style={{ fontSize: '15px' }}>{item.title}</Card.Text>
-                                <Card.Text className="fs-6 mb-2" style={{ color: '#555555' }}>{item.channelName}</Card.Text>
+                                <Card.Text className="fs-6 mb-2" style={{ color: '#555555' }}>{item.channel.channelName}</Card.Text>
                                 <Row>
                                     <Col md={4}>
                                         <Stack direction="horizontal">
                                             <div className="d-flex flex-column justify-content-center me-2">
                                                 <Image src={ViewsIcon} />
                                             </div>
-                                            <Card.Text className="fs-6" style={{ color: '#555555' }}>284K</Card.Text>
+                                            <Card.Text className="fs-6" style={{ color: '#555555' }}>{item.viewCount}</Card.Text>
                                         </Stack>
                                     </Col>
                                     <Col>
@@ -40,7 +40,7 @@ function SideVideoList() {
                                             <div className="d-flex flex-column justify-content-center me-2">
                                                 <Image src={DateIcon} />
                                             </div>
-                                            <Card.Text className="fs-6" style={{ color: '#555555' }}>06 Sep 2020</Card.Text>
+                                            <Card.Text className="fs-6" style={{ color: '#555555' }}>{item.formatTime}</Card.Text>
                                         </Stack>
                                     </Col>
                                 </Row>

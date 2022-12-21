@@ -27,23 +27,29 @@ function Creator() {
         return response.data.data;
     });
 
-    const handleUnsubscribe = useMutation(async (e) => {
+    const handleSubscribe = useMutation(async (e) => {
         try {
             e.preventDefault()
-            const response = await API.delete('/subscribe/' + id)
-            console.log("ini response unsubscribe", response)
-            // navigate("/CreatorPage/" + id)
+
+            const response = await API.post('/subscribe/' + id)
+            console.log("ini response subscribe", response)
+
+            const plusSubs = await API.patch('/plusSubs/' + id)
+            console.log("ini response plusSubs", plusSubs)
+            navigate("/")
         } catch (error) {
             console.log(error)
         }
     })
 
-    const handleSubscribe = useMutation(async (e) => {
+    const handleUnsubscribe = useMutation(async (e) => {
         try {
             e.preventDefault()
-            const response = await API.post('/subscribe/' + id)
-            console.log("ini response subscribe", response)
-            // navigate("/")
+            const response = await API.delete('/subscribe')
+            console.log("ini response unsubscribe", response)
+
+            await API.patch('/minusSubs/' + id)
+            navigate("/")
         } catch (error) {
             console.log(error)
         }
@@ -59,13 +65,12 @@ function Creator() {
                     <Image src={creator?.photo} className="me-4" style={{ width: '70px' }} />
                     <Stack direction="vertical">
                         <Card.Text className="text-white fs-3 mb-0">{creator?.channelName}</Card.Text>
-                        <Card.Text style={{ color: '#F0F0F0' }}>15K Subscriber</Card.Text>
+                        <Card.Text style={{ color: '#F0F0F0' }}>{creator?.subscriber} Subscriber</Card.Text>
                     </Stack>
                     {state?.user.id == id ? (
                         <></>
                     ) : (
                         <>
-
                             {sub?.other_id != id ? (
                                 <>
                                     <Button onClick={(e) => handleSubscribe.mutate(e)} className="py-2" style={{ backgroundColor: '#FF7A00', border: 'none', width: '15%' }}>
@@ -98,7 +103,7 @@ function Creator() {
                                                 <div className="d-flex flex-column justify-content-center me-2">
                                                     <Image src={ViewsIcon} />
                                                 </div>
-                                                <Card.Text className="fs-6" style={{ color: '#555555' }}>284K</Card.Text>
+                                                <Card.Text className="fs-6" style={{ color: '#555555' }}>{item?.viewCount}</Card.Text>
                                             </Stack>
                                         </Col>
                                         <Col>
@@ -106,7 +111,7 @@ function Creator() {
                                                 <div className="d-flex flex-column justify-content-center me-2">
                                                     <Image src={DateIcon} />
                                                 </div>
-                                                <Card.Text className="fs-6" style={{ color: '#555555' }}>06 Sep 2020</Card.Text>
+                                                <Card.Text className="fs-6" style={{ color: '#555555' }}>{item?.formatTime}</Card.Text>
                                             </Stack>
                                         </Col>
                                     </Row>

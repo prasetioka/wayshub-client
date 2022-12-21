@@ -33,7 +33,7 @@ function SideNavbar() {
                         <Card.Text className="text-white">Home</Card.Text>
                     </Stack>
 
-                    <Stack direction="horizontal" className="mb-5 btn ps-0">
+                    <Stack direction="horizontal" className="mb-5 btn ps-0" onClick={() => navigate("/Subscription")}>
                         <div className="d-flex flex-column justify-content-center me-3">
                             <Image src={SubscriptionIcon} />
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { UserContext } from "../context/userContext"
 import { Container, Form, Stack, Image, Card, Overlay, Popover } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
@@ -26,8 +26,6 @@ function TopNavbar() {
     }
 
     const [ state, dispatch ] = useContext(UserContext)
-
-    const NavPhoto = "http://localhost:5000/uploads/" + state?.user.photo
 
     const logout = () => {
         console.log(state)
@@ -58,7 +56,7 @@ function TopNavbar() {
                     </Stack>
 
                     <div ref={ref} >
-                        <Image src={channel?.photo === "http://localhost:5000/uploads/" ? Foto : channel?.photo } className="btn p-0" onClick={handleClick} style={{width:'40px'}} />
+                        <Image src={channel?.photo === "" ? Foto : channel?.photo } className="btn p-0" onClick={handleClick} style={{width:'40px'}} />
 
                         <Overlay show={show} target={target} placement="bottom-end" container={ref}>
                             <Popover id="popover-contained" style={{backgroundColor:'#141414'}}>
